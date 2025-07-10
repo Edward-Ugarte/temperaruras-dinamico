@@ -1,0 +1,179 @@
+versión de Gretl 2025b
+
+
+Listando 8 variables:
+  0) const         1) index         2) temp_max      3) temp_min    
+  4) temp_media    5) radiacion     6) altitud       7) rad_alt     
+
+# Crear rezagos manuales para las tres variables
+? genr temp_max_1  
+Se ha generado la serie temp_max_1 
+? genr temp_min_1    
+Se ha generado la serie temp_min_1 
+? genr temp_media_1 
+Se ha generado la serie temp_media_1 
+
+# Ecuación 1: temp_max
+? ols temp_max const temp_max_1 temp_min_1 temp_media_1
+
+Modelo 1: MCO, usando las observaciones 2-61 (n = 60)
+Variable dependiente: temp_max
+
+                coeficiente  Desv. típica  Estadístico t  valor p 
+  ----------------------------------------------------------------
+  const          20.7197       4.22594         4.903      8.47e-06 ***
+  temp_max_1      0.183620     0.909154        0.2020     0.8407  
+  temp_min_1      0.547793     0.963770        0.5684     0.5720  
+  temp_media_1   −0.306467     1.82998        −0.1675     0.8676  
+
+Media de la vble. dep.  23.98333   D.T. de la vble. dep.   0.892372
+Suma de cuad. residuos  44.90435   D.T. de la regresión    0.895468
+R-cuadrado              0.044249   R-cuadrado corregido   -0.006952
+F(3, 56)                0.864228   Valor p (de F)          0.465107
+Log-verosimilitud      −76.44202   Criterio de Akaike      160.8840
+Criterio de Schwarz     169.2614   Crit. de Hannan-Quinn   164.1609
+
+Sin considerar la constante, el valor p más alto fue el de la variable 10 (temp_media_1)
+
+? series pred_max
+Se ha generado la serie pred_max
+? scalar rmse_max 
+Se ha generado el escalar rmse_max
+# Ecuación 2: temp_min
+? ols temp_min const temp_max_1 temp_min_1 temp_media_1
+
+Modelo 2: MCO, usando las observaciones 2-61 (n = 60)
+Variable dependiente: temp_min
+
+                coeficiente  Desv. típica  Estadístico t  valor p
+  ---------------------------------------------------------------
+  const           6.26906      2.37917         2.635      0.0109  **
+  temp_max_1      0.590040     0.511848        1.153      0.2539 
+  temp_min_1      0.575171     0.542596        1.060      0.2937 
+  temp_media_1   −1.16474      1.03027        −1.131      0.2631 
+
+Media de la vble. dep.  6.416667   D.T. de la vble. dep.   0.497167
+Suma de cuad. residuos  14.23295   D.T. de la regresión    0.504143
+R-cuadrado              0.024026   R-cuadrado corregido   -0.028258
+F(3, 56)                0.459534   Valor p (de F)          0.711651
+Log-verosimilitud      −41.97276   Criterio de Akaike      91.94552
+Criterio de Schwarz     100.3229   Crit. de Hannan-Quinn   95.22238
+
+Sin considerar la constante, el valor p más alto fue el de la variable 9 (temp_min_1)
+
+
+# Ecuación 3: temp_media
+? ols temp_media const temp_max_1 temp_min_1 temp_media_1
+
+Modelo 3: MCO, usando las observaciones 2-61 (n = 60)
+Variable dependiente: temp_media
+
+                coeficiente  Desv. típica  Estadístico t  valor p 
+  ----------------------------------------------------------------
+  const          13.3094       1.98129         6.718      1.01e-08 ***
+  temp_max_1      0.402230     0.426247        0.9437     0.3494  
+  temp_min_1      0.590394     0.451853        1.307      0.1967  
+  temp_media_1   −0.760503     0.857967       −0.8864     0.3792  
+
+Media de la vble. dep.  15.19167   D.T. de la vble. dep.   0.422780
+Suma de cuad. residuos  9.870442   D.T. de la regresión    0.419831
+R-cuadrado              0.064043   R-cuadrado corregido    0.013903
+F(3, 56)                1.277279   Valor p (de F)          0.291050
+Log-verosimilitud      −30.99231   Criterio de Akaike      69.98463
+Criterio de Schwarz     78.36201   Crit. de Hannan-Quinn   73.26148
+
+Sin considerar la constante, el valor p más alto fue el de la variable 10 (temp_media_1)
+
+? series pred_media
+Se ha generado la serie pred_media
+? scalar rmse_media
+Se ha generado el escalar rmse_media
+# 🖨 Mostrar errores RMSE
+? print rmse_max rmse_min
+
+   rmse_max =  0.86510456
+
+   rmse_min =  0.48704804
+
+ rmse =  0.40559508
+? print temp_max pred_max
+
+temp_max:
+Rango de datos completo: 1 - 61 (n = 61)
+
+24.0000  25.0000  23.0000  24.0000  22.0000  24.0000  24.0000  25.0000  
+25.0000  25.0000  24.0000  23.0000  24.0000  23.0000  24.0000  25.0000  
+25.0000  24.0000  25.0000  24.0000  25.0000  23.0000  25.0000  23.0000  
+24.0000  25.0000  25.0000  23.0000  23.0000  24.0000  25.0000  24.0000  
+22.0000  23.0000  23.0000  25.0000  23.0000  23.0000  25.0000  24.0000  
+25.0000  24.0000  23.0000  24.0000  23.0000  24.0000  25.0000  25.0000  
+22.0000  25.0000  24.0000  24.0000  25.0000  24.0000  24.0000  25.0000  
+24.0000  23.0000  24.0000  24.0000  23.0000  
+
+pred_max:
+Rango de datos completo: 1 - 61 (n = 60)
+
+     NA  24.2109  23.8468  24.1806  23.8164  23.7556  23.8164  24.2109  
+23.8468  23.8468  23.8468  23.8164  23.7860  24.2109  24.1806  24.2109  
+23.8468  23.8468  24.2109  23.8468  24.2109  23.8468  24.1806  23.8468  
+24.1806  24.2109  23.8468  23.8468  23.7860  24.1806  23.8164  23.8468  
+23.8164  23.7556  24.1806  23.7860  23.8468  23.7860  23.7860  23.8468  
+24.2109  23.8468  24.2109  24.1806  24.2109  24.1806  24.2109  23.8468  
+23.8468  23.7556  23.8468  24.2109  24.2109  23.8468  24.2109  23.8164  
+24.0000  24.2109  24.1806  24.2109  23.8164  
+
+? print temp_min pred_min
+
+temp_min:
+Rango de datos completo: 1 - 61 (n = 61)
+
+7.00000  6.00000  7.00000  6.00000  6.00000  6.00000  7.00000  6.00000  
+6.00000  6.00000  6.00000  6.00000  7.00000  7.00000  7.00000  6.00000  
+6.00000  7.00000  6.00000  7.00000  6.00000  7.00000  6.00000  7.00000  
+7.00000  6.00000  6.00000  6.00000  7.00000  6.00000  6.00000  6.00000  
+6.00000  7.00000  6.00000  6.00000  6.00000  6.00000  6.00000  7.00000  
+6.00000  7.00000  7.00000  7.00000  7.00000  7.00000  6.00000  6.00000  
+6.00000  6.00000  7.00000  7.00000  6.00000  7.00000  6.00000  6.00000  
+7.00000  7.00000  7.00000  6.00000  7.00000  
+
+pred_min:
+Rango de datos completo: 1 - 61 (n = 60)
+
+     NA  6.40276  6.41763  6.39509  6.40996  6.39462  6.40996  6.40276  
+6.41763  6.41763  6.41763  6.40996  6.40229  6.40276  6.39509  6.40276  
+6.41763  6.41763  6.40276  6.41763  6.40276  6.41763  6.39509  6.41763  
+6.39509  6.40276  6.41763  6.41763  6.40229  6.39509  6.40996  6.41763  
+6.40996  6.39462  6.39509  6.40229  6.41763  6.40229  6.40229  6.41763  
+6.40276  6.41763  6.40276  6.39509  6.40276  6.39509  6.40276  6.41763  
+6.41763  6.39462  6.41763  6.40276  6.40276  6.41763  6.40276  6.40996  
+7.00000  6.40276  6.39509  6.40276  6.40996  
+
+? print temp_media pred_media
+
+temp_media:
+Rango de datos completo: 1 - 61 (n = 61)
+
+15.5000  15.5000  15.0000  15.0000  14.0000  15.0000  15.5000  15.5000  
+15.5000  15.5000  15.0000  14.5000  15.5000  15.0000  15.5000  15.5000  
+15.5000  15.5000  15.5000  15.5000  15.5000  15.0000  15.5000  15.0000  
+15.5000  15.5000  15.5000  14.5000  15.0000  15.0000  15.5000  15.0000  
+14.0000  15.0000  14.5000  15.5000  14.5000  14.5000  15.5000  15.5000  
+15.5000  15.5000  15.0000  15.5000  15.0000  15.5000  15.5000  15.5000  
+14.0000  15.5000  15.5000  15.5000  15.5000  15.5000  15.0000  15.0000  
+15.5000  15.0000  15.5000  15.0000  15.0000  
+
+pred_media:
+Rango de datos completo: 1 - 61 (n = 60)
+
+     NA  15.3079  15.1197  15.2859  15.0978  15.0538  15.0978  15.3079  
+15.1197  15.1197  15.1197  15.0978  15.0758  15.3079  15.2859  15.3079  
+15.1197  15.1197  15.3079  15.1197  15.3079  15.1197  15.2859  15.1197  
+15.2859  15.3079  15.1197  15.1197  15.0758  15.2859  15.0978  15.1197  
+15.0978  15.0538  15.2859  15.0758  15.1197  15.0758  15.0758  15.1197  
+15.3079  15.1197  15.3079  15.2859  15.3079  15.2859  15.3079  15.1197  
+15.1197  15.0538  15.1197  15.3079  15.3079  15.1197  15.3079  15.0978  
+15.5000  15.3079  15.2859  15.3079  15.0978  
+
+# 💾 Guardar base extendida con predicciones
+? store ".....gdt"
+ Proyección hacia observaciones 31–61
